@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Color Guessing Game</title>
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+        <style>
+
+/*These two classes add the fullscreen video background.*/
+        .fullscreen-bg {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: -100;
+        }
+
+        .fullscreen-bg__video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 110%;
+            opacity: 40%;
+            height: auto;
+        }
+/*This centers text.*/
+        .center-elements {
+            margin: auto;
+            text-align: center;
+            padding: 100px;
+        }
+     
+/*This is the box behind the game prompt.*/
+        .box-background {
+            margin-top: 10%;
+            margin-left: 35%;
+            margin-right: 35%;
+            padding-top: 40px;
+            background-color: rgb(255, 255, 255, 0.5);
+            border: black 10px solid;
+
+        }
+/*These rules change the text features as well as the padding.  */
+        h1 { 
+            font-family: 'Reenie Beanie', cursive, sans-serif;
+            font-size: 60px;
+        }
+
+        .text-padding {
+           padding-bottom: 20px;
+           margin-bottom: 5%;
+           font-family: 'Reenie Beanie', cursive, sans-serif;
+           font-size: 30px;
+           font-weight: bold;
+       }
+ 
+/*rbg values were used instead of colors or hexes in order to use opacity to make the box and button see thru */
+        button {
+            font-size: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            padding: 10px;
+            margin-bottom: 6%;
+            background: rgb(255, 255, 255, 0.7);
+            border: rgb(0, 0, 0, 0.75) 1px solid;
+            border-radius: 0px;
+        }
+
+        .button:hover { 
+            background: rgb(0, 0, 0, 0.75);
+            color: white;
+            transition: 0.7s;
+            border: 1px rgb(0, 0, 0, 0.75) solid;
+            border-radius: 0px;
+        }
+
+        </style>
+    </head>
+    <body>
+  <!--White display box as well as the content within it and the function to call the color game-->
+        <div class="center-elements">
+            <div class="box-background">
+                <h1>Color Guessing Game</h1>
+                    <button type="button" onclick="runGame()" class="button">Start Game</button><p>
+                <div class="text-padding">
+                    Play this fun game!
+                </div>
+            </div>
+        </div>
+
+<!--This is the video that appears as the background to the page.  The CSS enables this video to be the background.-->
+            <div class="fullscreen-bg">
+                <video loop muted autoplay src="blackwhitepaint.mp4" class="fullscreen-bg__video">
+                </video>
+            </div>
+            
+    <script>
+//Array declaration with the colors that could be guessed.
+        const COLORS_ARRAY = ['blue', 'cyan', 'gold', 'green', 'magenta', 'orange', 'red', 'white', 'yellow'];
+        let numTries = 0;
+
+// runGame function that also checks the input for guess.  It also checks if the color does not exist in the array.
+        function runGame() {
+        function checkGuess(guess, target) {
+        let correct = false;
+        
+            if (COLORS_ARRAY.indexOf(guess) === -1) {
+                alert('That color is not an option. You have tried ' + numTries + ' times.');
+                return false;
+            }
+            else if (guess < target) {
+                alert ('Sorry that is not the color! You have tried ' + numTries + ' times.');
+                return false;
+            }
+
+            else if (guess > target) {
+                alert('Sorry that is not the color! You have tried ' + numTries + ' times.');
+                return false;
+            }
+            else {
+                correct = true;
+                return correct;
+            }
+        }
+
+
+//Empty string declaration.
+        let guess = '';
+
+//Assumes that the answer is false off the bat.
+//      let correct = false;
+
+//Finds a random number on the array's index and keeps it a whole number.
+        const targetIndex = Math.floor(Math.random() * 10) + 1;
+        const target = COLORS_ARRAY[targetIndex];
+
+
+//Runs the loop that checks the input for the user's guess and matches it to the target, which is the random.
+//Also changes the color to the winning color 
+            do {
+                guess = prompt('I am thinking of one of these colors: \n\n' + COLORS_ARRAY.join(', ') + '\n\nWhat color am I thinking of?\n').toLowerCase();
+                numTries++;
+                if (guess === ('')) {
+                    alert('You did not enter a color');
+                    return;
+                }
+                correct = checkGuess(guess, target);
+            } while (!correct);
+                alert ('Congratulations!  You won! It took you ' + numTries + ' tries!')
+                document.body.style.background = guess;
+        }
+    </script>
+    </body>
+</html>
